@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nguyentk-timeline-reminder
+  namespace: nguyentk
+  labels:
+    app: timeline-reminder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timeline-reminder
+  template:
+    metadata:
+      labels:
+        app: timeline-reminder
+    spec:
+      imagePullSecrets:
+        - name: codebuild
+      containers:
+        - name: timeline-reminder
+          image: codebuild.alfinac.com:4444/nguyentk/timeline-reminder:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: timeline-reminder-config
+          env:
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: timeline-reminder-secret
+                  key: SMTP_PASSWORD
+            - name: TZ
+              value: Asia/Ho_Chi_Minh
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
