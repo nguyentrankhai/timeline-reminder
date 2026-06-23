@@ -33,6 +33,28 @@ export async function runCheck() {
   }
 }
 
+function logEnv() {
+  const envVars = {
+    GOOGLE_DRIVE_CSV_URL: process.env.GOOGLE_DRIVE_CSV_URL || '(not set)',
+    LOCAL_CSV_PATH: process.env.LOCAL_CSV_PATH || '(not set)',
+    SMTP_HOST: process.env.SMTP_HOST || '(not set)',
+    SMTP_PORT: process.env.SMTP_PORT || '(not set)',
+    SMTP_USER: process.env.SMTP_USER || '(not set)',
+    SMTP_PASSWORD: process.env.SMTP_PASSWORD ? '********' : '(not set)',
+    SMTP_FROM: process.env.SMTP_FROM || '(not set)',
+    NOTIFICATION_EMAILS: process.env.NOTIFICATION_EMAILS || '(not set)',
+    CRON_SCHEDULE: process.env.CRON_SCHEDULE || '(default: 15 2 * * *)',
+    TZ: process.env.TZ || '(default: Asia/Ho_Chi_Minh)',
+    LOG_LEVEL: process.env.LOG_LEVEL || '(default: INFO)',
+  };
+
+  console.log('=== Environment Configuration ===');
+  for (const [key, value] of Object.entries(envVars)) {
+    console.log(`  ${key}: ${value}`);
+  }
+  console.log('================================\n');
+}
+
 function scheduleJob() {
   const cronExpression = process.env.CRON_SCHEDULE || '15 2 * * *';
   const timezone = process.env.TZ || 'Asia/Ho_Chi_Minh';
@@ -63,6 +85,7 @@ function scheduleJob() {
 function main() {
   logger.info('=== Timeline Logistics Reminder Service ===');
   logger.info(`Timezone: ${process.env.TZ || 'Asia/Ho_Chi_Minh'}`);
+  logEnv();
 
   if (process.env.RUN_ONCE === 'true') {
     logger.info('Running once (RUN_ONCE=true)');
@@ -76,7 +99,18 @@ function main() {
       });
   } else {
     scheduleJob();
-    logger.info('Service is running. Press Ctrl+C to stop.');
+
+    logger.info('Running initial check to verify connectivity...');
+    runCheck()
+      .then(() => {
+        logger.info('Initial check completed successfully.');
+        logger.info('Service is running. Press Ctrl+C to stop.');
+      })
+      .catch((error) => {
+        logger.error(`Initial check failed: ${error.message}`);
+        logger.info('Service continues running. Cron job will retry at scheduled time.');
+        logger.info('Service is running. Press Ctrl+C to stop.');
+      });
   }
 }
 
