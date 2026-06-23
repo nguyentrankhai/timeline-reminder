@@ -10,7 +10,8 @@ export function checkTasks(tasks) {
 
   logger.info(`Checking tasks from ${formatDate(today)} to ${formatDate(threeDaysLater)}`);
 
-  const tasksWithEndDate = tasks.filter(t => t.endDate !== null);
+  const activeTasks = tasks.filter(t => t.status !== 'Hoàn thành');
+  const tasksWithEndDate = activeTasks.filter(t => t.endDate !== null);
 
   const dueToday = tasksWithEndDate.filter(t => {
     const end = normalizeDate(t.endDate);
