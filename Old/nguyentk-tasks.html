@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Danh sách công việc - NguyenTK</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; padding: 20px; color: #333; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .subtitle { color: #666; font-size: 13px; margin-bottom: 16px; }
+  .filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-bar label { font-size: 13px; font-weight: 600; }
+  .filter-bar input { padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; }
+  .filter-bar select { padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; background: #fff; }
+  .table-wrap { overflow-x: auto; background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+  th { background: #f0f4f8; padding: 10px 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e2e8f0; position: sticky; top: 0; }
+  td { padding: 8px 12px; border-bottom: 1px solid #edf2f7; }
+  tr:hover td { background: #f8fafc; }
+  .stt { text-align: center; width: 40px; }
+  .jira { font-family: monospace; font-size: 12px; color: #2563eb; }
+  .today-col { text-align: center; width: 80px; }
+  .today-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+  .today-yes { background: #fee2e2; color: #dc2626; }
+  .today-no { background: #f3f4f6; color: #9ca3af; }
+  .module-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; background: #e0f2fe; color: #0369a1; }
+  .status { font-size: 12px; padding: 2px 8px; border-radius: 4px; }
+  .status-done { background: #dcfce7; color: #16a34a; }
+  .status-pending { background: #fef3c7; color: #d97706; }
+  .status-progress { background: #dbeafe; color: #2563eb; }
+  .summary { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .summary-card { background: #fff; border-radius: 8px; padding: 12px 18px; box-shadow: 0 1px 3px rgba(0,0,0,.06); flex: 1; min-width: 140px; }
+  .summary-card .num { font-size: 24px; font-weight: 700; }
+  .summary-card .label { font-size: 12px; color: #666; }
+  .summary-card.today { border-left: 4px solid #dc2626; }
+  .summary-card.todo { border-left: 4px solid #d97706; }
+  .summary-card.done { border-left: 4px solid #16a34a; }
+  .summary-card.total { border-left: 4px solid #6366f1; }
+  .sticky-header { position: sticky; top: 0; z-index: 10; background: #f5f7fa; padding-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="sticky-header">
+<h1>Danh sách công việc - NguyenTK</h1>
+<div class="subtitle">Hôm nay: <span id="todayDisplay"></span></div>
+
+<div class="summary" id="summaryCards"></div>
+
+<div class="filter-bar">
+  <label>Module:</label>
+  <select id="filterModule" onchange="render()"><option value="">Tất cả</option></select>
+  <label>Tìm kiếm:</label>
+  <input type="text" id="filterSearch" placeholder="Tên công việc, Mã Jira..." oninput="render()">
+  <label>Trạng thái:</label>
+  <select id="filterStatus" onchange="render()">
+    <option value="">Tất cả</option>
+    <option value="Hoàn thành">Hoàn thành</option>
+    <option value="Chưa thực hiện">Chưa thực hiện</option>
+    <option value="Đang thực hiện">Đang thực hiện</option>
+  </select>
+  <label>Hôm nay:</label>
+  <select id="filterToday" onchange="render()">
+    <option value="">Tất cả</option>
+    <option value="yes">Phải làm hôm nay</option>
+  </select>
+</div>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+  <th class="stt">STT</th>
+  <th>Mã Jira</th>
+  <th>Tên Module</th>
+  <th>Tên công việc</th>
+  <th>Start Date</th>
+  <th>End Date</th>
+  <th class="today-col">Công việc phải làm hôm nay</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<script>
+const tasks = [
+  {jira:"LS-37", module:"Rate & Cost Management", task:"Xây dựng tài liệu SRS - Tạo giá Tariff", start:"23/03/2026", end:"15/05/2026", status:"Hoàn thành"},
+  {jira:"LS-37", module:"Rate & Cost Management", task:"Xây dựng tài liệu SRS - Truy vấn giá Tariff", start:"23/03/2026", end:"15/05/2026", status:"Hoàn thành"},
+  {jira:"LS-37", module:"Rate & Cost Management", task:"Xây dựng tài liệu SRS - Tạo/Cập nhật giá Cost", start:"23/03/2026", end:"15/05/2026", status:"Hoàn thành"},
+  {jira:"LS-37", module:"Rate & Cost Management", task:"Xây dựng tài liệu SRS - Truy vấn giá Cost", start:"23/03/2026", end:"15/05/2026", status:"Hoàn thành"},
+  {jira:"LS-37", module:"Rate & Cost Management", task:"Xây dựng tài liệu SRS - Tạo giá Commission", start:"23/03/2026", end:"15/05/2026", status:"Hoàn thành"},
+  {jira:"LS-37", module:"Rate & Cost Management", task:"Xây dựng tài liệu SRS - Truy vấn giá Commission", start:"23/03/2026", end:"15/05/2026", status:"Hoàn thành"},
+  {jira:"", module:"Rate & Cost Management", task:"Xây dựng tài liệu SRS - Cập nhật giá Tariff", start:"13/07/2026", end:"14/07/2026", status:"Chưa thực hiện"},
+  {jira:"", module:"Rate & Cost Management", task:"Xây dựng tài liệu SRS - Cập nhật giá Commission", start:"13/07/2026", end:"14/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-56", module:"Partner Management", task:"Xây dựng tài liệu SRS - Tạo / Cập nhật Partner", start:"15/05/2026", end:"10/06/2026", status:"Hoàn thành"},
+  {jira:"LS-56", module:"Partner Management", task:"Xây dựng tài liệu SRS - Truy vấn / Xem chi tiết Partner", start:"15/05/2026", end:"10/06/2026", status:"Hoàn thành"},
+  {jira:"", module:"Partner Management", task:"Xây dựng tài liệu SRS - View Activity", start:"", end:"", status:"Chưa thực hiện"},
+  {jira:"", module:"Partner Management", task:"Xây dựng tài liệu SRS - Tab Financial Profile - Credit Control", start:"", end:"", status:"Chưa thực hiện"},
+  {jira:"LS-272", module:"Partner Management", task:"Xây dựng tài liệu SRS - Truy vấn Partner theo Role Service (Modal Search)", start:"22/06/2026", end:"24/06/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Lead Management", task:"Xây dựng tài liệu SRS - Tạo, Cập nhật, Follow-up, Lead score Engine", start:"18/05/2026", end:"17/06/2026", status:"Hoàn thành"},
+  {jira:"LS-48", module:"Lead Management", task:"Xây dựng tài liệu SRS - Truy vấn & xem chi tiết", start:"18/05/2026", end:"17/06/2026", status:"Hoàn thành"},
+  {jira:"LS-48", module:"Lead Management", task:"Xây dựng tài liệu SRS - Lead Score Config", start:"18/05/2026", end:"17/06/2026", status:"Hoàn thành"},
+  {jira:"LS-48", module:"Lead Management", task:"Xây dựng tài liệu SRS - Convert Lead to Partner", start:"18/05/2026", end:"17/06/2026", status:"Hoàn thành"},
+  {jira:"LS-232", module:"Lead Management", task:"Xây dựng tài liệu SRS - Merge Lead", start:"14/07/2026", end:"15/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-233", module:"Lead Management", task:"Xây dựng tài liệu SRS - Assign Lead", start:"14/07/2026", end:"15/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Inquiry", task:"Xây dựng tài liệu SRS - Tạo Inquiry", start:"24/06/2026", end:"27/06/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Inquiry", task:"Xây dựng tài liệu SRS - Truy vấn / Xem chi tiết Inquiry", start:"29/06/2026", end:"01/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Inquiry", task:"Xây dựng tài liệu SRS - Cập nhật trạng thái Inquiry", start:"01/07/2026", end:"02/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Inquiry", task:"Xây dựng tài liệu SRS - Cập nhật Inquiry", start:"02/07/2026", end:"04/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Inquiry", task:"Xây dựng tài liệu SRS - (Cargo Acceptance & Planning Engine) Đề xuất chấp nhận hàng", start:"06/07/2026", end:"08/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Inquiry", task:"Xây dựng tài liệu SRS - (Cargo Acceptance & Planning Engine) Đề xuất transport plan và giá", start:"06/07/2026", end:"08/07/2026", status:"Chưa thực hiện"},
+  {jira:"", module:"Inquiry", task:"Xây dựng tài liệu SRS - ForeCast Profit", start:"", end:"", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Quotation", task:"Xây dựng tài liệu SRS - Tạo Quotation", start:"08/07/2026", end:"10/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Quotation - Inquiry", task:"Xây dựng tài liệu SRS - Tạo Quotation từ Inquiry manual", start:"08/07/2026", end:"10/07/2026", status:"Chưa thực hiện"},
+  {jira:"", module:"Quotation - Inquiry", task:"Xây dựng tài liệu SRS - Tạo Quotation từ Inquiry automation (Pipeline on service)", start:"", end:"", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Quotation", task:"Xây dựng tài liệu SRS - Truy vấn / Xem chi tiết Quotation", start:"10/07/2026", end:"13/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Quotation", task:"Xây dựng tài liệu SRS - Cập nhật Quotation", start:"10/07/2026", end:"13/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-48", module:"Quotation", task:"Xây dựng tài liệu SRS - Version giá", start:"10/07/2026", end:"13/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-255", module:"Pricing Request", task:"Xây dựng tài liệu SRS - Tạo / Cập nhật / Đổi trạng thái Pricing Request", start:"13/07/2026", end:"18/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-255", module:"Pricing Request", task:"Xây dựng tài liệu SRS - Truy vấn / Xem chi tiết Pricing Request", start:"13/07/2026", end:"18/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-255", module:"Pricing Request", task:"Xây dựng tài liệu SRS - Pricing Response", start:"13/07/2026", end:"18/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Booking Request", task:"SRS Tạo Booking Request", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Booking Request", task:"SRS Truy vấn & Xem chi tiết Booking Request", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Booking Request", task:"SRS Edit / Cancel Booking Request", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Booking Confirm", task:"SRS Tạo Booking Confirm", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Booking Confirm", task:"SRS Gán Carrier Booking / LCL Consol Batch", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Booking Confirm", task:"SRS Split Merge Booking Confirm", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Shipment", task:"SRS Shipment - Tạo Shipment", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Shipment", task:"SRS Shipment - Truy vấn & Xem chi tiết Shipment", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Shipment", task:"SRS Shipment - Edit/Change status", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Shipment", task:"SRS Service job - Truy vấn/ViewDetail", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Shipment", task:"SRS Service job - Tạo", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-64", module:"Booking & Shipment - Shipment", task:"SRS Service job - Edit/Delete/Change status", start:"20/07/2026", end:"30/07/2026", status:"Chưa thực hiện"},
+  {jira:"LS-72", module:"Freight Management", task:"SRS Freight Job", start:"30/07/2026", end:"08/08/2026", status:"Chưa thực hiện"},
+  {jira:"LS-72", module:"Freight Management", task:"SRS Carrier booking", start:"30/07/2026", end:"08/08/2026", status:"Chưa thực hiện"},
+  {jira:"LS-72", module:"Freight Management", task:"SRS Consol / Deconsol", start:"30/07/2026", end:"08/08/2026", status:"Chưa thực hiện"},
+  {jira:"LS-72", module:"Freight Management", task:"SRS LCL Consol Management", start:"30/07/2026", end:"08/08/2026", status:"Chưa thực hiện"},
+  {jira:"LS-72", module:"Freight Management", task:"SRS Multi-modal Execution", start:"30/07/2026", end:"08/08/2026", status:"Chưa thực hiện"},
+  {jira:"LS-72", module:"Freight Management", task:"SRS Checklist", start:"30/07/2026", end:"08/08/2026", status:"Chưa thực hiện"},
+  {jira:"LS-72", module:"Freight Management", task:"SRS Operation documents", start:"30/07/2026", end:"08/08/2026", status:"Chưa thực hiện"},
+];
+
+function parseDate(s) {
+  if (!s) return null;
+  const parts = s.split('/');
+  if (parts.length !== 3) return null;
+  return new Date(parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]));
+}
+
+function isToday(today, start, end) {
+  const s = parseDate(start);
+  const e = parseDate(end);
+  if (!s && !e) return false;
+  if (s && !e) return today >= s;
+  if (!s && e) return today <= e;
+  return today >= s && today <= e;
+}
+
+function fmtDate(d) {
+  return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
+}
+
+function render() {
+  const today = new Date();
+  document.getElementById('todayDisplay').textContent = fmtDate(today);
+
+  const fm = document.getElementById('filterModule').value;
+  const fs = document.getElementById('filterSearch').value.toLowerCase();
+  const fst = document.getElementById('filterStatus').value;
+  const ft = document.getElementById('filterToday').value;
+
+  const filtered = tasks.filter(t => {
+    if (fm && t.module !== fm) return false;
+    if (fs && !t.task.toLowerCase().includes(fs) && !t.jira.toLowerCase().includes(fs)) return false;
+    if (fst && t.status !== fst) return false;
+    if (ft === 'yes' && !isToday(today, t.start, t.end)) return false;
+    return true;
+  });
+
+  let html = '';
+  filtered.forEach((t, i) => {
+    const needs = isToday(today, t.start, t.end);
+    html += `<tr>
+      <td class="stt">${i+1}</td>
+      <td class="jira">${t.jira || '-'}</td>
+      <td><span class="module-badge">${t.module}</span></td>
+      <td>${t.task}</td>
+      <td>${t.start || '-'}</td>
+      <td>${t.end || '-'}</td>
+      <td class="today-col">${needs ? '<span class="today-badge today-yes">Phải làm</span>' : '<span class="today-badge today-no">-</span>'}</td>
+    </tr>`;
+  });
+  document.getElementById('tableBody').innerHTML = html;
+  updateSummary(today);
+}
+
+function updateSummary(today) {
+  const total = tasks.length;
+  const done = tasks.filter(t => t.status === 'Hoàn thành').length;
+  const pending = tasks.filter(t => t.status === 'Chưa thực hiện').length;
+  const needToday = tasks.filter(t => isToday(today, t.start, t.end)).length;
+
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="summary-card total"><div class="num">${total}</div><div class="label">Tổng số</div></div>
+    <div class="summary-card done"><div class="num">${done}</div><div class="label">Hoàn thành</div></div>
+    <div class="summary-card todo"><div class="num">${pending}</div><div class="label">Chưa thực hiện</div></div>
+    <div class="summary-card today"><div class="num">${needToday}</div><div class="label">Phải làm hôm nay</div></div>
+  `;
+}
+
+function initFilters() {
+  const modules = [...new Set(tasks.map(t => t.module))];
+  const sel = document.getElementById('filterModule');
+  modules.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m; opt.textContent = m;
+    sel.appendChild(opt);
+  });
+}
+
+initFilters();
+render();
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { parse } from 'csv-parse/sync';
 import logger from './logger.js';
 
@@ -9,7 +9,16 @@ export async function fetchCSV() {
   const localPath = process.env.LOCAL_CSV_PATH;
 
   if (url && url.includes('docs.google.com/spreadsheets')) {
-    return await fetchFromGoogleDrive(url);
+    const fileId = extractFileId(url);
+    if (!fileId) {
+      throw new Error(`Invalid Google Drive URL: ${url}`);
+    }
+
+    if (hasServiceAccountConfig()) {
+      return await fetchFromDriveAPI(fileId);
+    }
+
+    return await fetchFromPublicExport(url);
   }
 
   if (localPath) {
@@ -19,14 +28,67 @@ export async function fetchCSV() {
   throw new Error('No CSV source configured. Set GOOGLE_DRIVE_CSV_URL or LOCAL_CSV_PATH.');
 }
 
-async function fetchFromGoogleDrive(url) {
+function hasServiceAccountConfig() {
+  return !!(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || process.env.GOOGLE_SERVICE_ACCOUNT_KEY_JSON);
+}
+
+async function fetchFromDriveAPI(fileId) {
+  try {
+    logger.info(`Fetching CSV via Google Drive API (fileId: ${fileId})`);
+
+    const auth = await authenticateServiceAccount();
+    const { google } = await import('googleapis');
+    const drive = google.drive({ version: 'v3', auth });
+
+    const response = await drive.files.export({
+      fileId,
+      mimeType: 'text/csv',
+    });
+
+    const text = response.data;
+    if (!text || text.trim().length === 0) {
+      throw new Error('Empty CSV content received from Drive API');
+    }
+
+    return parseCSV(text);
+  } catch (error) {
+    logger.error(`Failed to fetch CSV from Google Drive API: ${error.message}`);
+    throw error;
+  }
+}
+
+async function authenticateServiceAccount() {
+  const { google } = await import('googleapis');
+
+  const keyPath = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  const keyJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY_JSON;
+
+  let credentials;
+  if (keyJson) {
+    credentials = JSON.parse(keyJson);
+  } else if (keyPath && existsSync(keyPath)) {
+    const content = readFileSync(keyPath, 'utf-8');
+    credentials = JSON.parse(content);
+  } else {
+    throw new Error('Service account key not found. Set GOOGLE_SERVICE_ACCOUNT_KEY or GOOGLE_SERVICE_ACCOUNT_KEY_JSON.');
+  }
+
+  const auth = new google.auth.GoogleAuth({
+    credentials,
+    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+  });
+
+  return auth;
+}
+
+async function fetchFromPublicExport(url) {
   try {
     const exportUrl = convertToExportUrl(url);
-    logger.info(`Fetching CSV from: ${exportUrl}`);
+    logger.info(`Fetching CSV from public export URL: ${exportUrl}`);
 
     const response = await fetch(exportUrl);
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      throw new Error(`HTTP ${response.status}: ${response.statusText}. File may have restricted access. Consider using a Service Account.`);
     }
 
     const text = await response.text();
@@ -58,6 +120,11 @@ function convertToExportUrl(url) {
     return `${GOOGLE_DRIVE_EXPORT}/${match[1]}/export?format=csv`;
   }
   return url;
+}
+
+function extractFileId(url) {
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : null;
 }
 
 export function parseCSV(text) {

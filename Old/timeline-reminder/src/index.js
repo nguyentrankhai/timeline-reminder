@@ -37,6 +37,8 @@ function logEnv() {
   const envVars = {
     GOOGLE_DRIVE_CSV_URL: process.env.GOOGLE_DRIVE_CSV_URL || '(not set)',
     LOCAL_CSV_PATH: process.env.LOCAL_CSV_PATH || '(not set)',
+    GOOGLE_SERVICE_ACCOUNT_KEY: process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '(not set)',
+    GOOGLE_SERVICE_ACCOUNT_KEY_JSON: process.env.GOOGLE_SERVICE_ACCOUNT_KEY_JSON ? '********' : '(not set)',
     SMTP_HOST: process.env.SMTP_HOST || '(not set)',
     SMTP_PORT: process.env.SMTP_PORT || '(not set)',
     SMTP_USER: process.env.SMTP_USER || '(not set)',
