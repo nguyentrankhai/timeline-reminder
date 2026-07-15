@@ -19,6 +19,7 @@ export const sheetConfig = {
   },
   overloadThreshold: 4,
   completedStatuses: ["Hoàn thành"],
+  upcomingWindowDays: 7,
 }
 
 export type SheetColumns = typeof sheetConfig.detailTimeline.columns

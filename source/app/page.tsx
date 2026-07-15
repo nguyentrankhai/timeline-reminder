@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { OverviewCards } from "@/components/dashboard/overview-cards"
 import { FreeTimeTable } from "@/components/dashboard/free-time-table"
 import { OverloadTable } from "@/components/dashboard/overload-table"
+import { UpcomingPlanTable } from "@/components/dashboard/upcoming-plan-table"
 import { ReportResponse } from "@/lib/types"
 import { BarChart3, RefreshCw } from "lucide-react"
 
@@ -88,6 +89,9 @@ export default function DashboardPage() {
                   <TabsTrigger value="overload">
                     Quá tải công việc
                   </TabsTrigger>
+                  <TabsTrigger value="upcoming">
+                    Kế hoạch tiếp theo
+                  </TabsTrigger>
                 </TabsList>
                 <TabsContent value="free-time">
                   <FreeTimeTable
@@ -98,6 +102,12 @@ export default function DashboardPage() {
                 <TabsContent value="overload">
                   <OverloadTable
                     data={data?.overloads ?? []}
+                    loading={loading}
+                  />
+                </TabsContent>
+                <TabsContent value="upcoming">
+                  <UpcomingPlanTable
+                    data={data?.upcomingPlans ?? []}
                     loading={loading}
                   />
                 </TabsContent>

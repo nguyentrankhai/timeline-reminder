@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { fetchTasks } from "@/lib/google-sheet"
 import { analyzeFreeTime } from "@/lib/analyze/free-time"
 import { analyzeOverload } from "@/lib/analyze/overload"
+import { analyzeUpcomingPlan } from "@/lib/analyze/upcoming-plan"
 import { ReportResponse } from "@/lib/types"
 
 export async function GET() {
@@ -16,9 +17,12 @@ export async function GET() {
           unfinishedTasks: 0,
           overloadedAssignees: 0,
           freeTimeSlots: 0,
+          overdueTasks: 0,
+          upcomingPlansCount: 0,
         },
         freeTimes: [],
         overloads: [],
+        upcomingPlans: [],
       } satisfies ReportResponse)
     }
 
@@ -34,12 +38,16 @@ export async function GET() {
 
     const freeTimes = analyzeFreeTime(tasks, today, maxEndDate)
     const overloads = analyzeOverload(tasks, today, maxEndDate)
+    const upcomingPlans = analyzeUpcomingPlan(tasks, today)
 
     const assigneeSet = new Set(tasks.map((t) => t.assignee).filter(Boolean))
     const unfinishedTasks = tasks.filter(
       (t) => !["Hoàn thành"].includes(t.status)
     )
     const overloadedSet = new Set(overloads.map((o) => o.assignee))
+    const overdueTasks = upcomingPlans.filter(
+      (p) => p.category === "overdue"
+    ).length
 
     return NextResponse.json({
       summary: {
@@ -48,9 +56,12 @@ export async function GET() {
         unfinishedTasks: unfinishedTasks.length,
         overloadedAssignees: overloadedSet.size,
         freeTimeSlots: freeTimes.length,
+        overdueTasks,
+        upcomingPlansCount: upcomingPlans.length,
       },
       freeTimes,
       overloads,
+      upcomingPlans,
     } satisfies ReportResponse)
   } catch (error) {
     console.log(error);

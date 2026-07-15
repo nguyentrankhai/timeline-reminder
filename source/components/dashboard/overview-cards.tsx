@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ReportSummary } from "@/lib/types"
-import { Users, ListChecks, AlertTriangle, Clock } from "lucide-react"
+import { Users, ListChecks, AlertTriangle, Clock, AlertCircle, CalendarDays } from "lucide-react"
 
 interface OverviewCardsProps {
   summary: ReportSummary | null
@@ -38,13 +38,27 @@ const cards = [
     color: "text-red-600",
     bg: "bg-red-100",
   },
+  {
+    key: "overdueTasks",
+    label: "Quá hạn",
+    icon: AlertCircle,
+    color: "text-red-600",
+    bg: "bg-red-100",
+  },
+  {
+    key: "upcomingPlansCount",
+    label: "Việc sắp tới",
+    icon: CalendarDays,
+    color: "text-blue-600",
+    bg: "bg-blue-100",
+  },
 ]
 
 export function OverviewCards({ summary, loading }: OverviewCardsProps) {
   if (loading) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {cards.map((card) => (
+    <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
+      {cards.map((card) => (
           <Card key={card.key}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">
@@ -61,7 +75,7 @@ export function OverviewCards({ summary, loading }: OverviewCardsProps) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
       {cards.map((card) => {
         const value = summary?.[card.key as keyof ReportSummary] ?? 0
         const Icon = card.icon
