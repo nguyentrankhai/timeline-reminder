@@ -1,328 +1,206 @@
 # Software Requirement Specification (SRS)
 
-# Timeline Management Dashboard
-
-Version: 1.0
+# Hệ thống Dashboard phân tích Timeline từ Google Sheet
 
 ---
 
-# 1. Overview
+# 1. Mục tiêu
 
-## 1.1 Objective
+Xây dựng Dashboard sử dụng **NextJS** để đọc dữ liệu trực tiếp từ Google Sheet và phân tích tải công việc của nhân sự.
 
-Xây dựng hệ thống Web Dashboard đọc dữ liệu Timeline từ Google Spreadsheet và sinh ra các báo cáo quản lý tiến độ dự án theo thời gian thực.
-
-Hệ thống chỉ đóng vai trò:
-
-* Read-only
-* Phân tích Timeline
-* Dashboard
-* Thống kê Resource
-* Cảnh báo
-
-Không chỉnh sửa dữ liệu trên Google Sheet.
-
-Google Sheet vẫn là **Single Source Of Truth**.
+Hệ thống chỉ phục vụ xem báo cáo nên **không cần Authentication**.
 
 ---
 
-# 2. System Architecture
+# 2. Công nghệ
 
-```
-Google Spreadsheet
-        │
-        │ Google API
-        ▼
-Sync Service
-        │
-        ▼
-Memory Cache (Server)
+## Frontend
 
-        │
+- NextJS 15
+- React
+- TailwindCSS
+- shadcn/ui
+- TanStack Table
+- DayJS
 
-REST API
+## Backend
 
-        │
+Sử dụng **NextJS Route Handler**
 
-NextJS Dashboard
+```text
+app/api/report/route.ts
 ```
 
-Project sử dụng:
+hoặc
 
-* NextJS 15
-* Typescript
-* App Router
-* Tailwind
-* shadcn/ui
-* React Query
-* Node Cache
-
-Không sử dụng Database.
-
-Dữ liệu chỉ lưu trong Memory Cache.
-
----
-
-# 3. Configuration
-
-Thông qua file `.env`
-
+```text
+app/api/google-sheet/route.ts
 ```
-GOOGLE_SERVICE_ACCOUNT=
+
+## Google Services
+
+- Google Sheets API
+- Google Service Account
+- Google Sheets Readonly API
+
+### Environment Variables
+
+```env
+GOOGLE_PROJECT_ID=
+
+GOOGLE_CLIENT_EMAIL=
+
 GOOGLE_PRIVATE_KEY=
+
 GOOGLE_SHEET_ID=
-
-GOOGLE_SHEET_NAME=Detail Timeline
-
-CACHE_REFRESH_MINUTE=15
-
-MAX_PARALLEL_TASK=4
 ```
 
 ---
 
-# 4. Data Source
+# 3. Kiến trúc hệ thống
 
-Nguồn dữ liệu:
-
-Google Spreadsheet
-
-Sheet Name mặc định:
-
-```
-Detail Timeline
-```
-
-Tên sheet có thể thay đổi thông qua ENV.
-
-Nếu sheet không tồn tại
-
-→ Sync Failed
-
----
-
-# 5. Google API
-
-Authentication
-
-Service Account
-
-Permission
-
-Read Only
-
-API
-
-```
+```text
+Google Sheet
+      │
 Google Sheets API
+      │
+Service Account
+      │
+NextJS API
+      │
+Dashboard
 ```
 
 ---
 
-# 6. Data Loading
+# 4. Luồng xử lý
 
-## Startup
-
-Khi server khởi động
-
-```
-Load Sheet
-↓
-
-Parse
+```text
+Dashboard
 
 ↓
 
-Validate
+API gọi Google Sheet
 
 ↓
 
-Cache
+Đọc dữ liệu từ sheet "Detail Timeline"
+
+↓
+
+Chuẩn hóa dữ liệu
+
+↓
+
+Phân tích timeline
+
+↓
+
+Render Dashboard
 ```
 
 ---
 
-## Manual Reload
+# 5. Mapping dữ liệu
 
-Dashboard có nút
+| Google Sheet | Model |
+|--------------|-------|
+| Công việc | taskName |
+| Người phụ trách | assignee |
+| Module | module |
+| Độ ưu tiên | priority |
+| Trạng thái | status |
+| % | progress |
+| Ngày bắt đầu | startDate |
+| Ngày kết thúc | endDate |
+| Ngày kết thúc thực tế | actualEndDate |
+| Mã Jira | jiraId |
+| Task Category | category |
 
-```
-Reload
-```
+## Model
 
-Thực hiện
+```ts
+interface Task {
+    taskName: string
 
-```
-Google API
+    assignee: string
 
-↓
+    module: string
 
-Reload Cache
-```
+    priority: number
 
-Không restart server.
+    status: string
 
----
+    progress: number
 
-## Auto Reload
+    startDate: Date
 
-Cron
+    endDate: Date
 
-```
-Every 15 minutes
-```
+    actualEndDate?: Date
 
-Flow
+    jiraId?: string
 
-```
-Read Sheet
-
-↓
-
-Replace Cache
-
-↓
-
-Done
-```
-
-Không merge dữ liệu.
-
-Luôn replace toàn bộ cache.
-
----
-
-# 7. Timeline Data Model
-
-Đọc toàn bộ sheet.
-
-Header nằm ở dòng 2.
-
-Các dòng dữ liệu bắt đầu từ dòng 3.
-
-Các cột được sử dụng:
-
-| Sheet Column          | Meaning       |
-| --------------------- | ------------- |
-| Mapping               | Mapping Code  |
-| Module                | Module        |
-| Công việc             | Task Name     |
-| Độ ưu tiên            | Priority      |
-| Người phụ trách       | Assignee      |
-| Trạng thái            | Status        |
-| %                     | Progress      |
-| Ngày bắt đầu          | Start Date    |
-| Ngày kết thúc         | End Date      |
-| Ngày kết thúc thực tế | Actual Finish |
-| Mã Jira               | Jira ID       |
-| Task Category         | Category      |
-
-Các cột khác bỏ qua.
-
----
-
-# 8. Ignore Rules
-
-Các dòng sau không được xem là Task:
-
-Người phụ trách = empty
-
-hoặc
-
-Ngày bắt đầu = empty
-
-hoặc
-
-Ngày kết thúc = empty
-
-hoặc
-
-Task Name = empty
-
----
-
-# 9. Cache Model
-
-```
-TimelineCache
-```
-
-```
-tasks[]
-
-lastReload
-
-version
-```
-
-Task Object
-
-```
-{
-    mapping
-
-    module
-
-    taskName
-
-    assignee
-
-    priority
-
-    status
-
-    progress
-
-    startDate
-
-    endDate
-
-    actualFinish
-
-    jira
-
-    category
+    category?: string
 }
 ```
 
 ---
 
-# 10. Dashboard
+# 6. Yêu cầu nghiệp vụ
 
-Dashboard gồm 4 widget chính.
+## 6.1 Danh sách nhân sự
+
+Lấy danh sách nhân sự bằng cách **Distinct** theo cột:
+
+```
+Người phụ trách
+```
+
+Ví dụ
+
+```
+TrinhLT
+
+AnhNT
+
+PhuongNV
+```
 
 ---
 
-## Widget 1
+## 6.2 Task chưa hoàn thành
 
-### Resource Availability
-
-Mục tiêu
-
-Tính khoảng thời gian rảnh của từng nhân sự.
-
-Thuật toán
-
-Lấy Current Date
-
-↓
-
-Tìm Task cuối cùng của User
-
-↓
-
-Sắp xếp theo End Date
-
-↓
-
-Lấy End Date lớn nhất
-
-↓
-
-Idle Day
+Các task được xem là **đang thực hiện** khi:
 
 ```
-EndDate - Today
+Status != Hoàn thành
+```
+
+Danh sách trạng thái hoàn thành nên được cấu hình để dễ mở rộng.
+
+Ví dụ
+
+```
+[
+    "Hoàn thành"
+]
+```
+
+---
+
+## 6.3 Khoảng thời gian phân tích
+
+Khoảng phân tích được xác định từ:
+
+```
+Today()
+```
+
+đến
+
+```
+Max(EndDate)
 ```
 
 Ví dụ
@@ -330,425 +208,437 @@ Ví dụ
 ```
 Today
 
-10/03
+2026-07-01
 
-Task cuối
+↓
 
-30/03
+Max EndDate
 
-Idle
-
-20 ngày
+2026-11-30
 ```
-
-Nếu không có Task
-
-```
-Available Now
-```
-
-Hiển thị
-
-| User | Last Task End | Free After | Remaining Days |
 
 ---
 
-## Widget 2
+# 7. Chức năng 1
 
-### Parallel Task Analyzer
+# Báo cáo thời gian trống của nhân sự
 
-Mục tiêu
+## Mục tiêu
 
-Tìm user đang làm quá nhiều task cùng lúc.
+Xác định khoảng thời gian nhân sự **không có task nào được phân công**.
 
-Rule
+---
 
-Hai Task overlap nếu
+## Điều kiện
 
-```
-Task A
+Chỉ tính:
 
-Start <= TaskB.End
+- Ngày làm việc
+- Không tính Thứ 7
+- Không tính Chủ nhật
+- Không tính ngày lễ
 
-AND
+Nguồn ngày lễ có thể lấy từ:
 
-End >= TaskB.Start
-```
+- Sheet Holidays
+- Google Calendar Holiday
+- File cấu hình JSON
 
-Đếm số lượng Task overlap theo từng ngày.
+---
 
-Nếu
-
-```
-Overlap >
-
-MAX_PARALLEL_TASK
-```
-
-Sinh Warning.
-
-Default
-
-```
-4
-```
+## Thuật toán
 
 Ví dụ
 
 ```
-NguyenTK
+Task 1
 
-05/03
+01/07 → 05/07
 
-6 Tasks
+Task 2
+
+10/07 → 15/07
 ```
 
-Warning
+Timeline
 
 ```
-Overloaded
+01 02 03 04 05
+██████████████
+
+06 07 08 09
+
+FREE
+
+10 11 12 13 14 15
+██████████████
 ```
+
+Kết quả
+
+```
+06/07
+
+07/07
+
+08/07
+
+09/07
+```
+
+Nếu có nhiều khoảng
+
+```
+06/07 - 09/07
+
+18/07 - 25/07
+```
+
+---
+
+## Output
+
+| Nhân sự | Từ ngày | Đến ngày | Số ngày làm việc |
+|----------|----------|-----------|------------------|
+| TrinhLT | 06/07 | 09/07 | 4 |
+| AnhNT | 18/07 | 25/07 | 6 |
+
+---
+
+# 8. Chức năng 2
+
+# Báo cáo quá tải công việc
+
+## Mục tiêu
+
+Một nhân sự được xem là **quá tải** khi:
+
+```
+Số task đồng thời > 4
+```
+
+---
+
+## Điều kiện
+
+Chỉ tính:
+
+```
+Status != Hoàn thành
+```
+
+và
+
+```
+EndDate >= Today()
+```
+
+---
+
+## Thuật toán
+
+Ví dụ
+
+```
+Task A
+
+01 → 20
+
+Task B
+
+05 → 18
+
+Task C
+
+08 → 22
+
+Task D
+
+10 → 15
+
+Task E
+
+11 → 17
+```
+
+Ngày
+
+```
+11
+```
+
+Có
+
+```
+5 task
+```
+
+=> Quá tải
+
+---
+
+## Output
+
+| Nhân sự | Ngày | Số task | Danh sách task |
+|----------|------|----------|----------------|
+| TrinhLT | 11/07 | 5 | Task A, Task B, Task C, Task D, Task E |
+
+---
+
+# 9. API
+
+## GET
+
+```
+GET /api/report
+```
+
+## Response
+
+```json
+{
+  "summary": {
+    "totalAssignees": 0,
+    "totalTasks": 0,
+    "unfinishedTasks": 0,
+    "overloadedAssignees": 0,
+    "freeTimeSlots": 0
+  },
+  "freeTimes": [],
+  "overloads": []
+}
+```
+
+---
+
+## FreeTime Model
+
+```ts
+interface FreeTime {
+
+    assignee: string
+
+    from: Date
+
+    to: Date
+
+    workingDays: number
+
+}
+```
+
+---
+
+## Overload Model
+
+```ts
+interface Overload {
+
+    assignee: string
+
+    date: Date
+
+    taskCount: number
+
+    tasks: string[]
+
+}
+```
+
+---
+
+# 10. Dashboard
+
+## Dashboard Overview
+
+Hiển thị các chỉ số:
+
+- Tổng số nhân sự
+- Tổng số task
+- Tổng task chưa hoàn thành
+- Tổng nhân sự đang quá tải
+- Tổng khoảng thời gian trống
+
+---
+
+## Tab 1 - Free Time
 
 Hiển thị
 
-| User | Date | Parallel Tasks |
+| Nhân sự | Từ ngày | Đến ngày | Số ngày |
+|----------|----------|-----------|----------|
+
+### Chức năng
+
+- Lọc theo nhân sự
+- Lọc theo khoảng thời gian
+- Sắp xếp theo số ngày trống
+- Export CSV
 
 ---
 
-## Widget 3
+## Tab 2 - Overload
 
-### Upcoming Deadline
+Hiển thị
 
-Task
+| Nhân sự | Ngày | Số task | Danh sách task |
+|----------|------|----------|----------------|
+
+### Chức năng
+
+- Lọc theo nhân sự
+- Lọc theo số lượng task
+- Xem chi tiết các task đang chồng lấp
+- Export CSV
+
+---
+
+# 11. Thuật toán đề xuất
+
+## 11.1 Phân tích thời gian trống
+
+### Bước 1
+
+Nhóm task theo:
+
+```
+assignee
+```
+
+### Bước 2
+
+Loại bỏ các task đã hoàn thành (nếu chỉ muốn đánh giá khối lượng công việc còn lại).
+
+### Bước 3
+
+Sắp xếp theo:
+
+```
+startDate ASC
+```
+
+### Bước 4
+
+Merge các khoảng thời gian giao nhau.
+
+Ví dụ
+
+```
+01 → 05
+
+03 → 08
+
+↓
+
+01 → 08
+```
+
+### Bước 5
+
+So sánh với khoảng:
+
+```
+Today()
+
+↓
+
+Max EndDate
+```
+
+để tìm khoảng trống.
+
+### Bước 6
+
+Loại bỏ:
+
+- Thứ 7
+- Chủ nhật
+- Ngày lễ
+
+Sau đó tính số ngày làm việc.
+
+### Độ phức tạp
+
+```
+O(n log n)
+```
+
+---
+
+## 11.2 Phân tích quá tải
+
+### Bước 1
+
+Nhóm task theo:
+
+```
+assignee
+```
+
+### Bước 2
+
+Duyệt từng ngày làm việc.
+
+### Bước 3
+
+Lấy các task thỏa điều kiện:
+
+```
+startDate <= currentDate <= endDate
+```
+
+và
 
 ```
 Status != Hoàn thành
-
-AND
-
-EndDate <= Today + 3
 ```
 
-Rule
+### Bước 4
 
-3 ngày mặc định.
+Đếm số lượng task.
 
-Có thể config.
-
-Sort
+Nếu
 
 ```
-Nearest Deadline
+taskCount > 4
 ```
 
----
+thì ghi nhận quá tải.
 
-## Widget 4
+### Bước 5 (Tùy chọn)
 
-### Overdue
+Gộp các ngày liên tiếp có cùng trạng thái quá tải thành một khoảng.
 
-Task
-
-```
-Status != Hoàn thành
-
-AND
-
-EndDate < Today
-```
-
-Sort
-
-Quá hạn nhiều nhất.
-
----
-
-# 11. Status Mapping
-
-Hoàn thành
+Ví dụ
 
 ```
-Hoàn thành
+10/07
 
-Done
+11/07
 
-Completed
-```
-
-Review
-
-```
-Chờ review
-
-Review
-```
-
-In Progress
-
-```
-Đang thực hiện
-
-Doing
-
-Progress
-```
-
-Pending
-
-```
-Pending
-
-Todo
-```
-
-AI Agent phải normalize Status trước khi xử lý.
-
----
-
-# 12. APIs
-
----
-
-## GET
-
-```
-/api/dashboard
-```
-
-Response
-
-```
-{
-    summary,
-
-    resources,
-
-    overload,
-
-    overdue,
-
-    upcoming,
-
-    lastReload
-}
-```
-
----
-
-## GET
-
-```
-/api/tasks
-```
-
-Query
-
-```
-user=
-
-status=
-
-module=
-```
-
----
-
-## POST
-
-```
-/api/reload
-```
-
-Function
-
-Reload Google Sheet.
-
-Response
-
-```
-{
-success:true,
-
-reloadTime
-}
-```
-
----
-
-## GET
-
-```
-/api/system
-```
-
-Response
-
-```
-{
-cacheVersion,
-
-lastReload,
-
-sheetName,
-
-sheetId,
-
-taskCount
-}
-```
-
----
-
-# 13. UI
-
-Sidebar
-
-```
-Dashboard
-
-Tasks
-
-System
-```
-
-Dashboard
-
-```
-Summary Card
+12/07
 
 ↓
 
-Resource Availability
-
-↓
-
-Overloaded Resource
-
-↓
-
-Upcoming Deadline
-
-↓
-
-Overdue
+10/07 - 12/07
 ```
 
-Tasks
-
-Data Grid
-
-Search
-
-Filter
-
-Sort
-
----
-
-# 14. Error Handling
-
-Google API Timeout
+### Độ phức tạp
 
 ```
-Keep Old Cache
+O(a × d × t)
 ```
 
-Google API Failed
+Trong đó:
+
+- `a`: số nhân sự
+- `d`: số ngày làm việc
+- `t`: số task trung bình của mỗi nhân sự
+
+Đối với quy mô vài nghìn task trên Google Sheet, thuật toán đáp ứng tốt cho dashboard nội bộ.
+
+Nếu dữ liệu tăng lên hàng chục nghìn task, có thể tối ưu bằng thuật toán **Line Sweep (Event-based)** để giảm chi phí tính toán xuống gần:
 
 ```
-Keep Old Cache
-
-Show Banner
+O(n log n)
 ```
-
-Invalid Sheet
-
-```
-Reload Failed
-```
-
-Empty Sheet
-
-```
-No Data
-```
-
----
-
-# 15. Logging
-
-Log
-
-```
-Reload Started
-
-Reload Finished
-
-Task Count
-
-Reload Duration
-
-Google API Error
-
-Validation Error
-```
-
----
-
-# 16. Non-functional Requirements
-
-| Item           | Requirement                   |
-| -------------- | ----------------------------- |
-| Response Time  | < 500 ms (cache hit)          |
-| Google Sync    | < 10 s                        |
-| Cache Refresh  | 15 phút                       |
-| Availability   | ≥ 99%                         |
-| Memory         | < 300 MB                      |
-| Database       | Không sử dụng                 |
-| Authentication | Không yêu cầu (phiên bản đầu) |
-
----
-
-# 17. Acceptance Criteria
-
-### AC-01
-
-Server khởi động phải tải thành công dữ liệu từ Google Sheet và lưu vào Memory Cache.
-
-### AC-02
-
-Người dùng có thể nhấn **Reload** để đồng bộ dữ liệu mới mà không cần khởi động lại server.
-
-### AC-03
-
-Hệ thống tự động đồng bộ lại dữ liệu mỗi 15 phút.
-
-### AC-04
-
-Dashboard hiển thị chính xác:
-
-* Thời gian rảnh của từng nhân sự.
-* Danh sách nhân sự có số task song song vượt ngưỡng cấu hình.
-* Danh sách công việc sắp đến hạn (mặc định trong 3 ngày) nhưng chưa hoàn thành.
-* Danh sách công việc quá hạn chưa hoàn thành.
-
-### AC-05
-
-Khi Google API lỗi hoặc Google Sheet không truy cập được, hệ thống vẫn tiếp tục phục vụ dữ liệu từ cache hiện có và ghi log lỗi.
-
-### AC-06
-
-Tất cả các phép tính chỉ sử dụng các dòng hợp lệ theo quy tắc lọc (đủ Assignee, Start Date, End Date và Task Name).
-
----
-
-## Khuyến nghị mở rộng
-
-Từ cấu trúc timeline hiện tại trong file Excel, mình khuyến nghị bổ sung các tính năng ngay từ đầu vì AI Agent sẽ dễ thiết kế kiến trúc mở rộng:
-
-* **Timeline Gantt View**: hiển thị Gantt theo từng nhân sự hoặc module.
-* **Workload Heatmap**: ma trận User × Ngày, tô màu theo số lượng task đồng thời.
-* **Module Progress Dashboard**: % hoàn thành theo từng module và mốc (Milestone).
-* **Critical Path Detection**: xác định chuỗi công việc ảnh hưởng trực tiếp đến ngày hoàn thành dự án.
-* **Slack/Telegram/Email Notification**: cảnh báo tự động khi có task sắp đến hạn hoặc quá hạn.
-* **Jira Hyperlink**: nếu có `Mã Jira`, tạo liên kết trực tiếp tới ticket để theo dõi. Đây là các tính năng có thể được thiết kế dưới dạng module mà không cần thay đổi kiến trúc hiện tại.

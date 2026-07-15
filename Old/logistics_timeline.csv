@@ -1,0 +1,221 @@
+,,,,,,,,,,
+,,,,,,,,,,
+,Module,Công việc,Độ ưu tiên,Người phụ trách,Trạng thái,Công việc kế tiếp,Ngày bắt đầu,Ngày kết thúc,Mã Jira,Ghi chú
+,,,,,,,,,,
+A,Mốc 1,Rate & Cost Management,,,,,,,LS-32,
+,Rate & Cost Management,Tài liệu BRD,1,TrinhLT,Hoàn thành,,07/02/2026,12/05/2026,LS-169,
+,Rate & Cost Management,Mockup UI Figma,1,TrinhLT,Hoàn thành,,07/02/2026,12/05/2026,,
+,Rate & Cost Management,Xây dựng tài liệu SRS - Tạo giá Tariff,1,NguyenTK,Hoàn thành,,23/03/2026,15/05/2026,LS-37,
+,Rate & Cost Management,Xây dựng tài liệu SRS - Truy vấn giá Tariff,1,NguyenTK,Hoàn thành,,23/03/2026,15/05/2026,LS-37,
+,Rate & Cost Management,Xây dựng tài liệu SRS - Tạo/Cập nhật giá Cost,1,NguyenTK,Hoàn thành,,23/03/2026,15/05/2026,LS-37,
+,Rate & Cost Management,Xây dựng tài liệu SRS - Truy vấn giá Cost,1,NguyenTK,Hoàn thành,,23/03/2026,15/05/2026,LS-37,
+,Rate & Cost Management,Xây dựng tài liệu SRS - Tạo giá Commission,1,NguyenTK,Hoàn thành,,23/03/2026,15/05/2026,LS-37,
+,Rate & Cost Management,Xây dựng tài liệu SRS - Truy vấn giá Commission,1,NguyenTK,Hoàn thành,,23/03/2026,15/05/2026,LS-37,
+,Rate & Cost Management,Xây dựng tài liệu SRS - Cập nhật giá Tariff,,NguyenTK,Chưa thực hiện,,13/07/2026,14/07/2026,,Pending thực hiện sau
+,Rate & Cost Management,Xây dựng tài liệu SRS - Cập nhật giá Commission,,NguyenTK,Chưa thực hiện,,13/07/2026,14/07/2026,,Pending thực hiện sau
+,Rate & Cost Management,DEV FE - Tạo / Truy vấn Tariff,1,VanHQ,Hoàn thành,,18/05/2026,26/05/2026,LS-36,
+,Rate & Cost Management,DEV API - Tạo / Truy vấn Tariff,1,ThanhTLD,Hoàn thành,,18/05/2026,26/05/2026,LS-35,
+,Rate & Cost Management,DEV FE - Cập nhật giá Tariff,,ThanhTLD,Chưa thực hiện,,14/07/2026,15/07/2026,,Pending thực hiện sau
+,Rate & Cost Management,DEV API - Cập nhật giá Tariff,,ThanhTLD,Chưa thực hiện,,14/07/2026,15/07/2026,,Pending thực hiện sau
+,Rate & Cost Management,DEV FE - Tạo / Cập nhật / Truy vấn Cost,1,VanHQ,Hoàn thành,,15/05/2026,05/06/2026,LS-136,
+,Rate & Cost Management,DEV API - Tạo / Cập nhật / Truy vấn Cost,1,ThanhTLD,Hoàn thành,,28/05/2026,03/06/2026,LS-135,
+,Rate & Cost Management,DEV FE - Tạo / Truy vấn Commission,1,VanHQ,Hoàn thành,,15/05/2026,29/05/2026,LS-134,
+,Rate & Cost Management,DEV API - Tạo / Truy vấn Commission,1,ThanhTLD,Hoàn thành,,27/05/2026,22/05/2026,LS-133,
+,Rate & Cost Management,DEV FE - Cập nhật Commission,,ThanhTLD,Chưa thực hiện,,14/07/2026,15/07/2026,,Pending thực hiện sau
+,Rate & Cost Management,DEV API - Cập nhật Commission,,ThanhTLD,Chưa thực hiện,,14/07/2026,15/07/2026,,Pending thực hiện sau
+,Rate & Cost Management,Kiểm thử round 1,1,TrinhLT,Hoàn thành,,08/06/2026,10/06/2026,LS-210,
+,Rate & Cost Management,Kiểm thử round 2,2,TrinhLT,Chưa thực hiện,,,,LS-209,
+,Rate & Cost Management,Demo playback,2,TrinhLT,Chưa thực hiện,,,,LS-34,
+B,Mốc 2,Partner Management,,,,,,,LS-28,
+,Partner Management,Tài liệu BRD,1,ToanNTD,Hoàn thành,,15/05/2026,18/05/2026,LS-57,Thực tế  present cho BEE ngày 18/04/2026
+,Partner Management,Mockup UI Figma,1,TrinhLT,Hoàn thành,,13/05/2026,15/05/2026,LS-162,
+,Partner Management,Xây dựng tài liệu SRS - Tạo / Cập nhật Partner,1,NguyenTK,Hoàn thành,,15/05/2026,10/06/2026,LS-56,
+,Partner Management,Xây dựng tài liệu SRS - Truy vấn / Xem chi tiết Partner,1,NguyenTK,Hoàn thành,,15/05/2026,10/06/2026,LS-56,
+,Partner Management,Xây dựng tài liệu SRS - View Activity,,NguyenTK,Chưa thực hiện,,,,,Chưa có module Quote / Inquiry nên chưa mô tả được
+,Partner Management,Xây dựng tài liệu SRS - Tab Financial Profile - Credit Control,,NguyenTK,Chưa thực hiện,,,,,Chưa có module Quote / Inquiry nên chưa mô tả được
+,Partner Management,"Xây dựng tài liệu SRS - Truy vấn Partner theo Role Service:
+- Modal Partner Contact Search
+- Modal Partner Search
+- Modal Select Customers
+- Modal Select Carriers
+- Modal Select Creditors",2,NguyenTK,Chưa thực hiện,Xây dựng SRS,22/06/2026,24/06/2026,LS-272,"Gắn vào các Modal trong module Rate&Cost 
+Hiện tại Rate & Cost đang hard-code thông tin KH"
+,Partner Management,DEV FE - Tạo Partner,1,VanHQ,Hoàn thành,,08/06/2026,18/06/2026,LS-53,
+,Partner Management,DEV FE - Cập nhật Partner,2,VanHQ,Hoàn thành,,08/06/2026,18/06/2026,LS-53,
+,Partner Management,DEV FE - Truy vấn Partner,1,VanHQ,Hoàn thành,,08/06/2026,18/06/2026,LS-53,
+,Partner Management,DEV FE - Xem chi tiết Partner,1,VanHQ,Hoàn thành,,08/06/2026,18/06/2026,LS-53,
+,Partner Management,DEV API - Tạo Partner,1,ThanhTLD,Hoàn thành,,05/06/2026,10/06/2026,LS-157,
+,Partner Management,DEV API - Cập nhật Partner,2,ThanhTLD,Hoàn thành,,05/06/2026,10/06/2026,LS-157,
+,Partner Management,DEV API - Truy vấn Partner,1,ThanhTLD,Hoàn thành,,05/06/2026,10/06/2026,LS-157,
+,Partner Management,DEV API - Xem chi tiết Partner,1,ThanhTLD,Hoàn thành,,05/06/2026,10/06/2026,LS-157,
+,Partner Management,DEV API - Truy vấn Partner theo Role Service,2,ThanhTLD,Chưa thực hiện,,24/06/2026,25/06/2026,,
+,Partner Management,"DEV FE - Ráp API các modal Truy vấn Partner theo Role Service
+- Modal Partner Contact Search
+- Modal Partner Search
+- Modal Select Customers
+- Modal Select Carriers
+- Modal Select Creditors",2,ThanhTLD,Chưa thực hiện,,24/06/2026,25/06/2026,,
+,Partner Management,DEV FE - View Activity,,,,,,,,Chưa có SRS
+,Partner Management,DEV FE - Tab Financial Profile - Credit Control,,,,,,,,Chưa có SRS
+,Partner Management,DEV API - View Activity,,,,,,,,Chưa có SRS
+,Partner Management,DEV API - Tab Financial Profile - Credit Control,,,,,,,,Chưa có SRS
+,Partner Management,Kiểm thử round 1,2,"TrinhLT
+ToanNTD",Hoàn thành,,18/06/2026,19/06/2026,"LS-229
+LS-219
+LS-227
+LS-226",
+C,Mốc 2,Lead Management,,,,,,,LS-31,
+,Lead Management,Tài liệu BRD,1,ToanNTD,Hoàn thành,,21/05/2026,29/05/2026,LS-50,Thực tế  present cho BEE ngày 02/05/2026
+,Lead Management,Mockup UI Figma,1,TrinhLT,Hoàn thành,,19/05/2026,02/06/2026,LS-132,
+,Lead Management,"Xây dựng tài liệu SRS - Tạo, Cập nhật, Follow-up, Lead score Engine",1,NguyenTK,Hoàn thành,,18/05/2026,17/06/2026,LS-48,
+,Lead Management,Xây dựng tài liệu SRS - Truy vấn & xem chi tiết,2,NguyenTK,Hoàn thành,,18/05/2026,17/06/2026,LS-48,
+,Lead Management,Xây dựng tài liệu SRS - Lead Score Config,3,NguyenTK,Hoàn thành,,18/05/2026,17/06/2026,LS-48,
+,Lead Management,Xây dựng tài liệu SRS - Convert Lead to Partner,3,NguyenTK,Hoàn thành,,18/05/2026,17/06/2026,LS-48,
+,Lead Management,Xây dựng tài liệu SRS - Merge Lead,4,NguyenTK,Chưa thực hiện,,14/07/2026,15/07/2026,LS-232,Pending thực hiện sau
+,Lead Management,Xây dựng tài liệu SRS - Assign Lead,4,NguyenTK,Chưa thực hiện,,14/07/2026,15/07/2026,LS-233,Pending thực hiện sau
+,Lead Management,DEV FE - Tạo / Cập nhật Lead,1,ThanhTLD,Hoàn thành,,17/06/2026,20/06/2026,LS-156,
+,Lead Management,DEV FE - Truy vấn / Xem chi tiết Lead,2,ThanhTLD,Hoàn thành,,17/06/2026,20/06/2026,LS-156,
+,Lead Management,DEV FE - Kiểm tra trùng Lead,1,ThanhTLD,Hoàn thành,,17/06/2026,20/06/2026,LS-156,
+,Lead Management,DEV FE - Follow-up,3,ThanhTLD,Chưa thực hiện,,23/06/2026,25/06/2026,LS-156,
+,Lead Management,DEV FE - Lead Score Config,3,ThanhTLD,Chưa thực hiện,,23/06/2026,25/06/2026,LS-156,
+,Lead Management,DEV API - Tạo / Cập nhật Lead,1,ThanhTLD,Hoàn thành,,11/06/2026,16/06/2026,LS-155,
+,Lead Management,DEV API - Truy vấn / Xem chi tiết Lead,2,ThanhTLD,Hoàn thành,,11/06/2026,16/06/2026,LS-155,
+,Lead Management,DEV API - Kiểm tra trùng Lead,1,ThanhTLD,Hoàn thành,,11/06/2026,16/06/2026,LS-155,
+,Lead Management,DEV API - Follow-up,3,ThanhTLD,Hoàn thành,,11/06/2026,16/06/2026,LS-155,
+,Lead Management,DEV API - Lead Score Config,3,ThanhTLD,Hoàn thành,,11/06/2026,16/06/2026,LS-155,
+,Lead Management,DEV API - Merge Lead,,ThanhTLD,Chưa thực hiện,,15/07/2026,17/07/2026,LS-155,
+,Lead Management,DEV API - Assign Lead,,ThanhTLD,Chưa thực hiện,,15/07/2026,17/07/2026,LS-155,
+,Lead Management,DEV FE - Merge Lead,,ThanhTLD,Chưa thực hiện,,15/07/2026,17/07/2026,LS-156,
+,Lead Management,DEV FE - Assign Lead,,ThanhTLD,Chưa thực hiện,,15/07/2026,17/07/2026,LS-156,
+,Lead Management,Kiểm thử round 1,1,TrinhLT,Đang thực hiện,,22/06/2026,24/06/2026,"LS-248
+LS-247
+LS-246",
+D,Mốc 3,Inquiry,,,,,,,LS-31,
+,Inquiry,Tài liệu BRD - (Tạo / Truy vấn / Cập nhật Inquiry),1,ToanNTD,Hoàn thành,,04/05/2026,13/05/2026,LS-213,
+,Inquiry,Tài liệu BRD - ForeCast Profit,,ToanNTD,,,,,,
+,Inquiry,Mockup UI Figma,1,TrinhLT,Hoàn thành,,15/05/2026,01/06/2026,LS-132,
+,Inquiry,Xây dựng tài liệu SRS - Tạo Inquiry,1,NguyenTK,Chưa thực hiện,,24/06/2026,27/06/2026,LS-48,
+,Inquiry,Xây dựng tài liệu SRS - Truy vấn / Xem chi tiết Inquiry,1,NguyenTK,Chưa thực hiện,,29/06/2026,01/07/2026,LS-48,
+,Inquiry,Xây dựng tài liệu SRS - Cập nhật trạng thái Inquiry,2,NguyenTK,Chưa thực hiện,,01/07/2026,02/07/2026,LS-48,
+,Inquiry,Xây dựng tài liệu SRS - Cập nhật Inquiry,3,NguyenTK,Chưa thực hiện,,02/07/2026,04/07/2026,LS-48,
+,Inquiry,Xây dựng tài liệu SRS - (Cargo Acceptance & Planning Engine) Đề xuất chấp nhận hàng,3,NguyenTK,Chưa thực hiện,,06/07/2026,08/07/2026,LS-48,
+,Inquiry,Xây dựng tài liệu SRS - (Cargo Acceptance & Planning Engine) Đề xuất transport plan và giá,3,NguyenTK,Chưa thực hiện,,06/07/2026,08/07/2026,LS-48,
+,Inquiry,Xây dựng tài liệu SRS - ForeCast Profit,4,NguyenTK,Chưa thực hiện,,,,,Chưa có tài liệu BRD
+,Inquiry,DEV FE - Tạo Inquiry,1,VanHQ,Chưa thực hiện,,22/06/2026,24/06/2026,LS-153,
+,Inquiry,DEV FE - Truy vấn / Xem chi tiết Inquiry,1,VanHQ,Chưa thực hiện,,24/06/2026,25/06/2026,LS-153,
+,Inquiry,DEV FE - Cập nhật trạng thái Inquiry,2,VanHQ,Chưa thực hiện,,25/06/2026,26/06/2026,LS-153,
+,Inquiry,DEV FE - ForeCast Profit,4,VanHQ,Chưa thực hiện,,,,,Chưa có UI/UX
+,Inquiry,DEV API - Tạo Inquiry,1,ThanhTLD,Chưa thực hiện,,27/06/2026,28/06/2026,LS-45,
+,Inquiry,DEV API - Truy vấn / Xem chi tiết Inquiry,1,ThanhTLD,Chưa thực hiện,,01/07/2026,01/07/2026,LS-45,
+,Inquiry,DEV API - Cập nhật trạng thái Inquiry,2,ThanhTLD,Chưa thực hiện,,02/07/2026,03/07/2026,LS-45,
+,Inquiry,DEV API - Cập nhật Inquiry,3,ThanhTLD,Chưa thực hiện,,04/07/2026,05/07/2026,LS-45,
+,Inquiry,DEV API - ForeCast Profit,4,ThanhTLD,Chưa thực hiện,,,,,Chưa có tài liệu BRD
+,Inquiry,Kiểm thử round 1,1,ToanNTD,Chưa thực hiện,,08/07/2026,09/07/2026,,
+E,Mốc 3,Quotation,,,,,,,LS-31,
+,Quotation,Tài liệu BRD - (Tạo / Truy vấn / Cập nhật Quotation),1,ToanNTD,Hoàn thành,,19/05/2026,27/05/2026,LS-214,
+,Quotation,Tài liệu BRD -  Tạo Quotation từ Inquiry (Pipeline base on service),2,ToanNTD,,,,,,
+,Quotation,Mockup UI Figma,1,TrinhLT,Hoàn thành,,03/06/2026,05/06/2026,LS-132,
+,Quotation,Xây dựng tài liệu SRS - Tạo Quotation,1,NguyenTK,Chưa thực hiện,,08/07/2026,10/07/2026,LS-48,
+,Quotation - Inquiry,Xây dựng tài liệu SRS - Tạo Quotation từ Inquiry manual,4,NguyenTK,Chưa thực hiện,,08/07/2026,10/07/2026,LS-48,
+,Quotation - Inquiry,Xây dựng tài liệu SRS - Tạo Quotation từ Inquiry automation (Pipeline on service),5,NguyenTK,Chưa thực hiện,,,,,Chưa có BRD
+,Quotation,Xây dựng tài liệu SRS - Truy vấn / Xem chi tiết Quotation,2,NguyenTK,Chưa thực hiện,,10/07/2026,13/07/2026,LS-48,
+,Quotation,Xây dựng tài liệu SRS - Cập nhật Quotation,3,NguyenTK,Chưa thực hiện,,10/07/2026,13/07/2026,LS-48,
+,Quotation,Xây dựng tài liệu SRS - Version giá,3,NguyenTK,Chưa thực hiện,,10/07/2026,13/07/2026,LS-48,
+,Quotation,DEV FE - Tạo Quotation - Tab General,1,VanHQ,Chưa thực hiện,,26/06/2026,27/06/2026,LS-150,
+,Quotation,DEV FE - Tạo Quotation - Tab Sea,1,VanHQ,Chưa thực hiện,,26/06/2026,27/06/2026,LS-150,
+,Quotation,DEV FE - Tạo Quotation - Tab Air,1,VanHQ,Chưa thực hiện,,29/06/2026,30/06/2026,LS-150,
+,Quotation,DEV FE - Tạo Quotation - Tab Truck,1,VanHQ,Chưa thực hiện,,30/06/2026,01/07/2026,LS-150,
+,Quotation,DEV FE - Tạo Quotation - Tab Customs Clearance,1,VanHQ,Chưa thực hiện,,01/07/2026,02/07/2026,LS-150,
+,Quotation - Inquiry,DEV FE - Tạo Quotation từ Inquiry manual,1,VanHQ,Chưa thực hiện,,01/07/2026,02/07/2026,LS-150,
+,Quotation - Inquiry,DEV FE - Tạo Quotation từ Inquiry automation (Pipeline on service),1,VanHQ,Chưa thực hiện,,,,,Chưa có BRD
+,Quotation,DEV API - Tạo Quotation - Tab General,1,ThanhTLD,Chưa thực hiện,,10/07/2026,11/07/2026,LS-149,
+,Quotation,DEV API - Tạo Quotation - Tab Sea,1,ThanhTLD,Chưa thực hiện,,10/07/2026,11/07/2026,LS-149,
+,Quotation,DEV API - Tạo Quotation - Tab Air,1,ThanhTLD,Chưa thực hiện,,10/07/2026,11/07/2026,LS-149,
+,Quotation,DEV API - Tạo Quotation - Tab Truck,1,ThanhTLD,Chưa thực hiện,,11/07/2026,13/07/2026,LS-149,
+,Quotation,DEV API - Tạo Quotation - Tab Customs Clearance,1,ThanhTLD,Chưa thực hiện,,11/07/2026,13/07/2026,LS-149,
+,Quotation - Inquiry,DEV API - Tạo Quotation từ Inquiry manual,1,ThanhTLD,Chưa thực hiện,,11/07/2026,13/07/2026,LS-149,
+,Quotation - Inquiry,DEV API - Tạo Quotation từ Inquiry automation (Pipeline on service),1,ThanhTLD,Chưa thực hiện,,,,,Chưa có BRD
+,Quotation,DEV FE - Truy vấn Quotation,2,VanHQ,Chưa thực hiện,,02/07/2026,04/07/2026,LS-150,
+,Quotation,DEV FE - Xem chi tiết Quotation,2,VanHQ,Chưa thực hiện,,02/07/2026,04/07/2026,LS-150,
+,Quotation,DEV FE - Xem version giá,4,VanHQ,Chưa thực hiện,,07/07/2026,08/07/2026,LS-150,
+,Quotation,DEV FE - Cập nhật trạng thái (Change Status),3,VanHQ,Chưa thực hiện,,04/07/2026,07/07/2026,LS-150,
+,Quotation,DEV FE - Edit Quotation,3,VanHQ,Chưa thực hiện,,04/07/2026,07/07/2026,LS-150,
+,Quotation,DEV FE - Delete Quotation,3,VanHQ,Chưa thực hiện,,04/07/2026,07/07/2026,LS-150,
+,Quotation,DEV API - Truy vấn Quotation,2,ThanhTLD,Chưa thực hiện,,13/07/2026,14/07/2026,LS-149,
+,Quotation,DEV API - Xem chi tiết Quotation,2,ThanhTLD,Chưa thực hiện,,13/07/2026,14/07/2026,LS-149,
+,Quotation,DEV API - Xem version giá,4,ThanhTLD,Chưa thực hiện,,13/07/2026,14/07/2026,LS-149,
+,Quotation,DEV API - Cập nhật trạng thái (Change Status),3,ThanhTLD,Chưa thực hiện,,14/07/2026,15/07/2026,LS-149,
+,Quotation,DEV API - Edit Quotation,3,ThanhTLD,Chưa thực hiện,,14/07/2026,15/07/2026,LS-149,
+,Quotation,DEV API - Delete Quotation,3,ThanhTLD,Chưa thực hiện,,14/07/2026,15/07/2026,LS-149,
+,Quotation,Kiểm thử round 1,2,ToanNTD,Chưa thực hiện,,,,,
+F,Mốc 4,Pricing Request,,,,,,,,
+,Pricing Request,BRD Tạo / View Detail / Search / Edit / Update Status Pricing Request,1,ToanNTD,Đang thực hiện,,08/06/2026,25/06/2026,LS-215,"Done Round1 ngày 18/06/2025
+Đang thực hiện Round 2"
+,Pricing Request,BRD Pricing Response,2,ToanNTD,Đang thực hiện,,08/06/2026,25/06/2026,LS-215,
+,Pricing Request,Mockup UI Figma,1,TrinhLT,Đang thực hiện,,16/6/2026,17/6/2026,LS-236,
+,Pricing Request,Xây dựng tài liệu SRS - Tạo / Cập nhật / Đổi trạng thái Pricing Request,1,NguyenTK,Chưa thực hiện,,13/07/2026,18/07/2026,LS-255,
+,Pricing Request,Xây dựng tài liệu SRS - Truy vấn / Xem chi tiết Pricing Request,2,NguyenTK,Chưa thực hiện,,13/07/2026,18/07/2026,LS-255,
+,Pricing Request,Xây dựng tài liệu SRS - Pricing Response,3,NguyenTK,Chưa thực hiện,,13/07/2026,18/07/2026,LS-255,
+,Pricing Request,DEV FE - Tạo Pricing Request,1,VanHQ,Chưa thực hiện,,07/07/2026,09/07/2026,LS-269,
+,Pricing Request,DEV FE - Truy vấn Pricing Request,2,VanHQ,Chưa thực hiện,,09/07/2026,10/07/2026,LS-269,
+,Pricing Request,DEV FE - Xem chi tiết Pricing Request,2,VanHQ,Chưa thực hiện,,09/07/2026,10/07/2026,LS-269,
+,Pricing Request,DEV FE - Chuyển trạng thái Pricing Request,3,VanHQ,Chưa thực hiện,,10/07/2026,11/07/2026,LS-269,
+,Pricing Request,DEV FE - Pricing Response,1,VanHQ,Chưa thực hiện,,10/07/2026,11/07/2026,LS-269,
+,Pricing Request,DEV API - Tạo Pricing Request,1,ThanhTLD,Chưa thực hiện,,18/07/2026,20/07/2026,LS-268,
+,Pricing Request,DEV API - Truy vấn Pricing Request,2,ThanhTLD,Chưa thực hiện,,20/07/2026,21/07/2026,LS-268,
+,Pricing Request,DEV API - Xem chi tiết Pricing Request,2,ThanhTLD,Chưa thực hiện,,20/07/2026,21/07/2026,LS-268,
+,Pricing Request,DEV API - Chuyển trạng thái Pricing Request,3,ThanhTLD,Chưa thực hiện,,21/07/2026,22/07/2026,LS-268,
+,Pricing Request,DEV API - Pricing Response (Select / Append),1,ThanhTLD,Chưa thực hiện,,21/07/2026,22/07/2026,LS-268,
+,Pricing Request,Kiểm thử round 1,1,TrinhLT,Chưa thực hiện,,,,,
+G,Mốc 4,Booking & Shipment,,,,,,,LS-30,
+,Booking & Shipment - Booking Request,BRD Tạo Booking Request,1,ToanNTD,Chưa thực hiện,,29/6/2026,1/7/2026,LS-251,
+,Booking & Shipment - Booking Request,BRD Edit / Cancel Booking Request,2,ToanNTD,Chưa thực hiện,,30/6/2026,1/7/2026,LS-253,
+,Booking & Shipment - Booking Request,BRD Truy vấn & Xem chi tiết Booking Request,2,ToanNTD,Chưa thực hiện,,2/7/2026,3/7/2026,LS-252,
+,Booking & Shipment - Booking Confirm,BRD Tạo Booking Confirm,1,ToanNTD,Chưa thực hiện,,8/7/2026,9/7/2026,LS-254,"Off ngày 6,7/7"
+,Booking & Shipment - Booking Confirm,BRD Gán Carrier Booking / LCL Consol Batch,2,ToanNTD,Chưa thực hiện,,9/7/2026,10/7/2026,LS-256,
+,Booking & Shipment - Booking Confirm,BRD Split Merge Booking Confirm,3,ToanNTD,Chưa thực hiện,,9/7/2026,10/7/2026,LS-257,
+,Booking & Shipment - Shipment,BRD Shipment - Tạo Shipment,1,TrinhLT,Chưa thực hiện,,26/06/2026,30/06/2026,LS-259,
+,Booking & Shipment - Shipment,BRD Shipment - Truy vấn & Xem chi tiết Shipment,2,TrinhLT,Chưa thực hiện,,26/06/2026,30/06/2026,LS-260,
+,Booking & Shipment - Shipment,BRD Shipment - Edit/Change status,3,TrinhLT,Chưa thực hiện,,26/06/2026,30/06/2026,LS-261,
+,Booking & Shipment - Shipment,BRD Service job - Truy vấn/ViewDetail,1,TrinhLT,Chưa thực hiện,,01/07/2026,03/07/2026,LS-262,
+,Booking & Shipment - Shipment,BRD Service job - Tạo Service job,2,TrinhLT,Chưa thực hiện,,01/07/2026,03/07/2026,LS-263,
+,Booking & Shipment - Shipment,BRD Service job - Edit/Delete/Change status,3,TrinhLT,Chưa thực hiện,,01/07/2026,03/07/2026,LS-264,
+,Booking & Shipment - Booking Request,Booking Request - Mockup UI Figma,1,TrinhLT,Chưa thực hiện,,03/07/2026,08/07/2026,LS-258,
+,Booking & Shipment - Booking Confirm,Booking Confirm  - Mockup UI Figma,1,TrinhLT,Chưa thực hiện,,11/07/2026,15/07/2026,LS-258,
+,Booking & Shipment - Shipment,Shipment - Mockup UI Figma,1,TrinhLT,Chưa thực hiện,,03/07/2026,08/07/2026,LS-258,
+,Booking & Shipment - Booking Request,SRS Tạo Booking Request,1,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Booking Request,SRS Truy vấn & Xem chi tiết Booking Request,2,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Booking Request,SRS Edit / Cancel Booking Request,2,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Booking Confirm,SRS Tạo Booking Confirm,1,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Booking Confirm,SRS Gán Carrier Booking / LCL Consol Batch,2,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Booking Confirm,SRS Split Merge Booking Confirm,3,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Shipment,SRS Shipment - Tạo Shipment,1,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Shipment,SRS Shipment - Truy vấn & Xem chi tiết Shipment,2,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Shipment,SRS Shipment - Edit/Change status,3,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Shipment,SRS Service job - Truy vấn/ViewDetail,1,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Shipment,SRS Service job - Tạo,2,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,Booking & Shipment - Shipment,SRS Service job - Edit/Delete/Change status,3,NguyenTK,Chưa thực hiện,,20/07/2026,30/07/2026,LS-64,
+,,,,,Chưa thực hiện,,,,,
+H,Mốc 5,Freight Management,,,,,,,LS-29,
+,Freight Management,BRD Freight Job,1,TrinhLT,Chưa thực hiện,,08/07/2026,11/07/2026,LS-73,
+,Freight Management,BRD Carrier booking,1,TrinhLT,Chưa thực hiện,,08/07/2026,11/07/2026,LS-73,
+,Freight Management,BRD Consol / Deconsol,2,TrinhLT,Chưa thực hiện,,15/07/2026,18/07/2026,LS-73,
+,Freight Management,BRD LCL Consol Management,3,TrinhLT,Chưa thực hiện,,15/07/2026,18/07/2026,LS-73,
+,Freight Management,BRD Multi-modal Execution,2,TrinhLT,Chưa thực hiện,,15/07/2026,18/07/2026,LS-73,
+,Freight Management,BRD Checklist,3,TrinhLT,Chưa thực hiện,,15/07/2026,18/07/2026,LS-73,
+,Freight Management,BRD Operation documents,1,TrinhLT,Chưa thực hiện,,08/07/2026,11/07/2026,LS-73,
+,Freight Management,Mockup UI Figma,1,TrinhLT,Chưa thực hiện,,18/07/2026,24/07/2026,LS-73,
+,Freight Management,SRS Freight Job,,NguyenTK,Chưa thực hiện,,30/07/2026,08/08/2026,LS-72,
+,Freight Management,SRS Carrier booking,,NguyenTK,Chưa thực hiện,,30/07/2026,08/08/2026,LS-72,
+,Freight Management,SRS Consol / Deconsol,,NguyenTK,Chưa thực hiện,,30/07/2026,08/08/2026,LS-72,
+,Freight Management,SRS LCL Consol Management,,NguyenTK,Chưa thực hiện,,30/07/2026,08/08/2026,LS-72,
+,Freight Management,SRS Multi-modal Execution,,NguyenTK,Chưa thực hiện,,30/07/2026,08/08/2026,LS-72,
+,Freight Management,SRS Checklist,,NguyenTK,Chưa thực hiện,,30/07/2026,08/08/2026,LS-72,
+,Freight Management,SRS Operation documents,,NguyenTK,Chưa thực hiện,,30/07/2026,08/08/2026,LS-72,
+,,,,,,,,,,
+F,Mốc 5,Pricing Engine,,,,,,,,
+,Pricing Engine,,,,,,,,,
+,Customer Commission Management,,,,,,,,,
+G,Mốc 5,,,,,,,,,
+,Sale,Customer Intelligence,,,,,,,,
+,Sale,Sale Performance,,,,,,,,
